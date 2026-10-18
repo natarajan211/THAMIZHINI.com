@@ -16,6 +16,7 @@ const defaultSettings = {
   opening_hours: "Monday – Sunday: 9:30 AM – 9:30 PM",
   google_maps_link: "https://maps.google.com/?q=Usman+Road+T+Nagar+Chennai",
   upi_id: "natarajanamsavalli348-2@okaxis",
+  upi_number: "9962998657",
   upi_merchant_name: "Thamizhini Couture",
   delivery_fee: 0.00
 };
@@ -39,17 +40,31 @@ async function ensureSettingsTable() {
       opening_hours VARCHAR(150),
       google_maps_link VARCHAR(500),
       upi_id VARCHAR(100) DEFAULT 'natarajanamsavalli348-2@okaxis',
+      upi_number VARCHAR(50) DEFAULT '9962998657',
       upi_merchant_name VARCHAR(150) DEFAULT 'Thamizhini Couture',
       delivery_fee DECIMAL(10, 2) DEFAULT 0.00,
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     ) ENGINE=InnoDB;
   `);
 
+  // Ensure upi_number column exists in existing tables
+  try {
+    const [cols] = await pool.query(
+      "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'store_settings' AND COLUMN_NAME = 'upi_number'"
+    );
+    if (cols.length === 0) {
+      await pool.query("ALTER TABLE store_settings ADD COLUMN upi_number VARCHAR(50) DEFAULT '9962998657' AFTER upi_id");
+    }
+    await pool.query("UPDATE store_settings SET upi_number = '9962998657' WHERE (upi_number IS NULL OR upi_number = '') AND id = 1");
+  } catch (colErr) {
+    console.error('Column migration note for upi_number:', colErr.message);
+  }
+
   const [rows] = await pool.query('SELECT * FROM store_settings WHERE id = 1');
   if (rows.length === 0) {
     await pool.query(`
-      INSERT INTO store_settings (id, store_name, tagline, address_line1, address_line2, city, state, pincode, phone, secondary_phone, email, whatsapp, opening_hours, google_maps_link, upi_id, upi_merchant_name)
-      VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO store_settings (id, store_name, tagline, address_line1, address_line2, city, state, pincode, phone, secondary_phone, email, whatsapp, opening_hours, google_maps_link, upi_id, upi_number, upi_merchant_name)
+      VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `, [
       defaultSettings.store_name,
       defaultSettings.tagline,
@@ -65,6 +80,7 @@ async function ensureSettingsTable() {
       defaultSettings.opening_hours,
       defaultSettings.google_maps_link,
       defaultSettings.upi_id,
+      defaultSettings.upi_number,
       defaultSettings.upi_merchant_name
     ]);
   }
@@ -104,6 +120,7 @@ async function updateSettings(req, res) {
       opening_hours,
       google_maps_link,
       upi_id,
+      upi_number,
       upi_merchant_name,
       delivery_fee
     } = req.body;
@@ -124,6 +141,7 @@ async function updateSettings(req, res) {
         opening_hours = COALESCE(?, opening_hours),
         google_maps_link = COALESCE(?, google_maps_link),
         upi_id = COALESCE(?, upi_id),
+        upi_number = COALESCE(?, upi_number),
         upi_merchant_name = COALESCE(?, upi_merchant_name),
         delivery_fee = COALESCE(?, delivery_fee)
       WHERE id = 1
@@ -142,6 +160,7 @@ async function updateSettings(req, res) {
       opening_hours,
       google_maps_link,
       upi_id,
+      upi_number,
       upi_merchant_name,
       delivery_fee !== undefined ? parseFloat(delivery_fee) || 0 : null
     ]);

@@ -659,6 +659,7 @@ async function loadAdminSettings() {
       setVal('setHours', s.opening_hours);
       setVal('setMapsLink', s.google_maps_link);
       setVal('setUpiId', s.upi_id || 'natarajanamsavalli348-2@okaxis');
+      setVal('setUpiNumber', s.upi_number || '9962998657');
       setVal('setUpiName', s.upi_merchant_name || 'Thamizhini Couture');
       setVal('setDeliveryFee', s.delivery_fee !== undefined ? s.delivery_fee : 0);
     }
@@ -686,6 +687,7 @@ async function handleSettingsFormSubmit(e) {
     opening_hours: document.getElementById('setHours').value.trim(),
     google_maps_link: document.getElementById('setMapsLink').value.trim(),
     upi_id: document.getElementById('setUpiId').value.trim(),
+    upi_number: document.getElementById('setUpiNumber').value.trim(),
     upi_merchant_name: document.getElementById('setUpiName').value.trim(),
     delivery_fee: parseFloat(document.getElementById('setDeliveryFee')?.value) || 0
   };

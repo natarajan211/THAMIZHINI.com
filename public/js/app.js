@@ -744,6 +744,10 @@ function updateUpiDetails(amount) {
   const displayUpiId = document.getElementById('displayUpiId');
   if (displayUpiId) displayUpiId.innerText = upiId;
 
+  const displayUpiNumber = document.getElementById('displayUpiNumber');
+  const upiNumber = (state.storeSettings && state.storeSettings.upi_number) ? state.storeSettings.upi_number : '9962998657';
+  if (displayUpiNumber) displayUpiNumber.innerText = upiNumber;
+
   // Standard NPCI UPI URI Scheme
   const upiUri = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(merchantName)}&am=${amount}&cu=INR&tn=Thamizhini%20Order`;
 
@@ -769,6 +773,20 @@ function copyUpiId() {
     });
   } else {
     fallbackCopyText(upiId);
+  }
+}
+
+// Copy store UPI Number to clipboard
+function copyUpiNumber() {
+  const upiNum = (state.storeSettings && state.storeSettings.upi_number) ? state.storeSettings.upi_number : (document.getElementById('displayUpiNumber')?.innerText || '9962998657');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(upiNum).then(() => {
+      showToast(`UPI Number "${upiNum}" copied!`, 'success');
+    }).catch(() => {
+      fallbackCopyText(upiNum);
+    });
+  } else {
+    fallbackCopyText(upiNum);
   }
 }
 
