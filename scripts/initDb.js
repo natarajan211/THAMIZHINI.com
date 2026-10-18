@@ -64,13 +64,20 @@ async function initDatabase() {
         original_price DECIMAL(10, 2) DEFAULT NULL,
         shipping_cost DECIMAL(10, 2) DEFAULT 0.00,
         category ENUM('Women', 'Accessories') NOT NULL,
-        image_url VARCHAR(600) NOT NULL,
+        image_url LONGTEXT NOT NULL,
         stock INT DEFAULT 25,
         rating DECIMAL(2, 1) DEFAULT 4.5,
         is_featured BOOLEAN DEFAULT 0,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       ) ENGINE=InnoDB;
     `);
+
+    // Ensure image_url is LONGTEXT for existing databases
+    try {
+      await connection.query('ALTER TABLE products MODIFY COLUMN image_url LONGTEXT NOT NULL;');
+    } catch (imgColErr) {
+      // Column might already be longtext
+    }
 
     // 4. Create Orders Table
     await connection.query(`

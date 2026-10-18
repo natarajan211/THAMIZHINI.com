@@ -77,7 +77,8 @@ async function createProduct(req, res) {
     let image_url = req.body.image_url;
 
     if (req.file) {
-      image_url = `/uploads/${req.file.filename}`;
+      const base64Data = req.file.buffer.toString('base64');
+      image_url = `data:${req.file.mimetype};base64,${base64Data}`;
     }
 
     if (!name || !price || !category || !image_url) {
@@ -131,7 +132,8 @@ async function updateProduct(req, res) {
     let image_url = req.body.image_url;
 
     if (req.file) {
-      image_url = `/uploads/${req.file.filename}`;
+      const base64Data = req.file.buffer.toString('base64');
+      image_url = `data:${req.file.mimetype};base64,${base64Data}`;
     }
 
     const [existing] = await pool.query('SELECT id FROM products WHERE id = ?', [id]);

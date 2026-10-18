@@ -124,7 +124,7 @@ function renderProducts(products) {
     return `
       <div class="product-card" data-id="${prod.id}">
         <div class="product-thumb">
-          <img src="${escapeHtml(prod.image_url)}" alt="${escapeHtml(prod.name)}" loading="lazy">
+          <img src="${escapeHtml(prod.image_url)}" alt="${escapeHtml(prod.name)}" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=700&auto=format&fit=crop&q=80';">
           ${prod.is_featured ? '<span class="product-badge">Featured</span>' : ''}
           ${isSale ? `<span class="product-badge sale" style="${prod.is_featured ? 'left: auto; right: 12px;' : ''}">${discount}% OFF</span>` : ''}
           <button class="quick-view-overlay-btn" onclick="openQuickView(${prod.id})">

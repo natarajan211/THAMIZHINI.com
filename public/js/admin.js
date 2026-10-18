@@ -192,7 +192,7 @@ function renderAdminProducts(products) {
   tbody.innerHTML = products.map(prod => `
     <tr>
       <td>
-        <img src="${escapeHtml(prod.image_url)}" class="table-thumb" alt="${escapeHtml(prod.name)}">
+        <img src="${escapeHtml(prod.image_url)}" class="table-thumb" alt="${escapeHtml(prod.name)}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=700&auto=format&fit=crop&q=80';">
       </td>
       <td>
         <strong>${escapeHtml(prod.name)}</strong>
