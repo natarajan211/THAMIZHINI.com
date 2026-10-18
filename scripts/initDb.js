@@ -10,17 +10,30 @@ const DB_PASSWORD = process.env.DB_PASSWORD || '';
 const DB_PORT = process.env.DB_PORT ? Number(process.env.DB_PORT) : 3306;
 const DB_NAME = process.env.DB_NAME || 'fashion_ecommerce';
 
+const isSSL =
+  process.env.DB_SSL === 'true' ||
+  (process.env.DB_PORT && Number(process.env.DB_PORT) === 4000) ||
+  (process.env.DB_HOST && process.env.DB_HOST.includes('tidbcloud.com'));
+
+const sslConfig = isSSL
+  ? {
+      minVersion: 'TLSv1.2',
+      rejectUnauthorized: process.env.DB_SSL_REJECT_UNAUTHORIZED === 'false' ? false : true
+    }
+  : undefined;
+
 async function initDatabase() {
-  console.log('🔄 Connecting to MySQL server to initialize database...');
+  console.log('🔄 Connecting to MySQL/TiDB server to initialize database...');
   let connection;
 
   try {
-    // 1. Connect to MySQL Server without database to create DB if needed
+    // 1. Connect to MySQL/TiDB Server without database to create DB if needed
     connection = await mysql.createConnection({
       host: DB_HOST,
       user: DB_USER,
       password: DB_PASSWORD,
-      port: DB_PORT
+      port: DB_PORT,
+      ssl: sslConfig
     });
 
     await connection.query(`CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`);

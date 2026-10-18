@@ -3,7 +3,7 @@ const { pool } = require('../config/db');
 async function migrate() {
   try {
     const [colsOrders] = await pool.query(
-      "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = 'fashion_ecommerce' AND TABLE_NAME = 'orders'"
+      "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'orders'"
     );
     const colNamesOrders = colsOrders.map(c => c.COLUMN_NAME);
 
@@ -19,7 +19,7 @@ async function migrate() {
     await pool.query('UPDATE orders SET items_total = total_amount - shipping_fee WHERE items_total = 0 OR items_total IS NULL');
 
     const [colsSettings] = await pool.query(
-      "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = 'fashion_ecommerce' AND TABLE_NAME = 'store_settings'"
+      "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'store_settings'"
     );
     const colNamesSettings = colsSettings.map(c => c.COLUMN_NAME);
 
