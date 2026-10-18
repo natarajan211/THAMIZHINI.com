@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | THAMIZHINI</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+
+  <!-- Top Admin Bar -->
+  <header class="admin-header">
+    <div class="container admin-nav">
+      <div class="admin-brand">
+        <a href="/" class="brand-logo">
+          <span class="logo-text">THAMIZHINI</span>
+        </a>
+        <span class="admin-badge"><i class="fa-solid fa-shield-halved"></i> Admin Control</span>
+      </div>
+
+      <div class="admin-nav-actions">
+        <a href="/" class="btn btn-outline-light btn-sm"><i class="fa-solid fa-store"></i> View Storefront</a>
+        <div class="admin-user-pill">
+          <i class="fa-regular fa-circle-user"></i>
+          <span id="adminUserName">Admin</span>
+        </div>
+        <button class="btn btn-danger btn-sm" onclick="adminLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Admin Layout -->
+  <main class="container admin-main">
+    
+    <!-- Stats Row -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon icon-revenue"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+        <div class="stat-data">
+          <span class="stat-title">Total Revenue</span>
+          <h3 id="statRevenue">₹0</h3>
+          <small class="stat-sub">From confirmed orders</small>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon icon-orders"><i class="fa-solid fa-truck-ramp-box"></i></div>
+        <div class="stat-data">
+          <span class="stat-title">Total Orders</span>
+          <h3 id="statOrders">0</h3>
+          <small class="stat-sub">Placed by customers</small>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon icon-pending"><i class="fa-solid fa-clock-rotate-left"></i></div>
+        <div class="stat-data">
+          <span class="stat-title">Pending Orders</span>
+          <h3 id="statPending">0</h3>
+          <small class="stat-sub">Requires fulfillment</small>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon icon-products"><i class="fa-solid fa-shirt"></i></div>
+        <div class="stat-data">
+          <span class="stat-title">Total Products</span>
+          <h3 id="statProducts">0</h3>
+          <small class="stat-sub">Women & Accessories</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="admin-tabs">
+      <button class="admin-tab-btn active" id="tabBtnProducts" onclick="switchAdminTab('products')">
+        <i class="fa-solid fa-boxes-stacked"></i> Products Management
+      </button>
+      <button class="admin-tab-btn" id="tabBtnOrders" onclick="switchAdminTab('orders')">
+        <i class="fa-solid fa-list-check"></i> Orders Management
+      </button>
+      <button class="admin-tab-btn" id="tabBtnSettings" onclick="switchAdminTab('settings')">
+        <i class="fa-solid fa-location-dot"></i> Shop Address & Contact
+      </button>
+    </div>
+
+    <!-- PRODUCTS TAB CONTENT -->
+    <section id="adminProductsSection" class="admin-section active">
+      <div class="section-toolbar">
+        <div>
+          <h2>Product Inventory</h2>
+          <p>Add products with image upload, edit details or update stock</p>
+        </div>
+        <button class="btn btn-primary" onclick="openProductModal('add')">
+          <i class="fa-solid fa-plus"></i> Add New Product
+        </button>
+      </div>
+
+      <div class="table-responsive">
+        <table class="admin-table" id="productsTable">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Product Name</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Shipping Cost (டெலிவரி)</th>
+              <th>Stock</th>
+              <th>Featured</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="productsTableBody">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ORDERS TAB CONTENT -->
+    <section id="adminOrdersSection" class="admin-section">
+      <div class="section-toolbar">
+        <div>
+          <h2>Customer Orders & Fulfillment</h2>
+          <p>Review customer shipping addresses, view items and update delivery status</p>
+        </div>
+        <button class="btn btn-outline-dark btn-sm" onclick="loadAdminOrders()">
+          <i class="fa-solid fa-rotate"></i> Refresh Orders
+        </button>
+      </div>
+
+      <!-- Orders Status Filter Pills (Separate Pending, Completed, Cancelled) -->
+      <div class="orders-filter-container">
+        <span class="filter-label"><i class="fa-solid fa-filter"></i> Filter by Status:</span>
+        <div class="order-filter-pills">
+          <button class="order-pill active" id="pillAll" data-status="All" onclick="filterAdminOrders('All')">
+            All Orders (<span id="countAll">0</span>)
+          </button>
+          <button class="order-pill pill-pending" id="pillPending" data-status="Pending" onclick="filterAdminOrders('Pending')">
+            <i class="fa-solid fa-clock"></i> Pending (<span id="countPending">0</span>)
+          </button>
+          <button class="order-pill pill-processing" id="pillProcessing" data-status="Processing" onclick="filterAdminOrders('Processing')">
+            <i class="fa-solid fa-arrows-rotate"></i> Processing (<span id="countProcessing">0</span>)
+          </button>
+          <button class="order-pill pill-shipped" id="pillShipped" data-status="Shipped" onclick="filterAdminOrders('Shipped')">
+            <i class="fa-solid fa-truck-fast"></i> Shipped (<span id="countShipped">0</span>)
+          </button>
+          <button class="order-pill pill-delivered" id="pillDelivered" data-status="Delivered" onclick="filterAdminOrders('Delivered')">
+            <i class="fa-solid fa-circle-check"></i> Completed / Delivered (<span id="countDelivered">0</span>)
+          </button>
+          <button class="order-pill pill-cancelled" id="pillCancelled" data-status="Cancelled" onclick="filterAdminOrders('Cancelled')">
+            <i class="fa-solid fa-ban"></i> Cancelled (<span id="countCancelled">0</span>)
+          </button>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="admin-table" id="ordersTable">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Delivery Address (டெலிவரி முகவரி)</th>
+              <th>Items Ordered</th>
+              <th>Pricing & Delivery Fee (டெலிவரி கட்டணம்)</th>
+              <th>Payment</th>
+              <th>Status (நிலை)</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="ordersTableBody">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- STORE ADDRESS & SETTINGS TAB CONTENT -->
+    <section id="adminSettingsSection" class="admin-section">
+      <div class="section-toolbar">
+        <div>
+          <h2>Shop Address & Store Details</h2>
+          <p>Configure the physical boutique address, mobile numbers, working hours, and map link</p>
+        </div>
+      </div>
+
+      <div class="settings-card">
+        <form id="storeSettingsForm" onsubmit="handleSettingsFormSubmit(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Boutique / Store Name *</label>
+              <input type="text" id="setStoreName" required>
+            </div>
+            <div class="form-group">
+              <label>Tagline / Motto</label>
+              <input type="text" id="setTagline">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Street Address / Door No. *</label>
+              <input type="text" id="setAddress1" placeholder="e.g. No. 48, Usman Road, T. Nagar" required>
+            </div>
+            <div class="form-group">
+              <label>Landmark / Area</label>
+              <input type="text" id="setAddress2" placeholder="e.g. Opposite to Panagal Park">
+            </div>
+          </div>
+
+          <div class="form-row form-row-3col">
+            <div class="form-group">
+              <label>City *</label>
+              <input type="text" id="setCity" placeholder="Chennai" required>
+            </div>
+            <div class="form-group">
+              <label>State *</label>
+              <input type="text" id="setState" placeholder="Tamil Nadu" required>
+            </div>
+            <div class="form-group">
+              <label>PIN / Postal Code *</label>
+              <input type="text" id="setPin" placeholder="600017" required>
+            </div>
+          </div>
+
+          <div class="form-row form-row-3col">
+            <div class="form-group">
+              <label>Primary Phone / Mobile *</label>
+              <input type="text" id="setPhone" placeholder="+91 98400 12345" required>
+            </div>
+            <div class="form-group">
+              <label>Landline / Secondary Phone</label>
+              <input type="text" id="setSecondaryPhone" placeholder="044 2434 5678">
+            </div>
+            <div class="form-group">
+              <label>WhatsApp Number</label>
+              <input type="text" id="setWhatsapp" placeholder="+91 98400 12345">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Official Contact Email *</label>
+              <input type="email" id="setEmail" placeholder="contact@thamizhini.com" required>
+            </div>
+            <div class="form-group">
+              <label>Store Timings *</label>
+              <input type="text" id="setHours" placeholder="Monday – Sunday: 9:30 AM – 9:30 PM" required>
+            </div>
+          </div>
+
+          <div class="form-row form-row-3col">
+            <div class="form-group">
+              <label><i class="fa-solid fa-qrcode" style="color: #6366f1;"></i> Store UPI ID *</label>
+              <input type="text" id="setUpiId" placeholder="e.g. natarajanamsavalli348-2@okaxis" required>
+            </div>
+            <div class="form-group">
+              <label>UPI Merchant Name</label>
+              <input type="text" id="setUpiName" placeholder="e.g. Thamizhini Couture">
+            </div>
+            <div class="form-group">
+              <label><i class="fa-solid fa-truck" style="color: #10b981;"></i> Default Delivery Fee (₹)</label>
+              <input type="number" id="setDeliveryFee" min="0" step="1" placeholder="0">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Google Maps Directions Link</label>
+            <input type="url" id="setMapsLink" placeholder="https://maps.google.com/...">
+          </div>
+
+          <div style="margin-top: 20px;">
+            <button type="submit" class="btn btn-primary btn-lg" id="btnSaveSettings">
+              <i class="fa-solid fa-floppy-disk"></i> Save Shop Address & Details
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Add / Edit Product Modal (Image File Upload + URL) -->
+  <div class="modal" id="productModal">
+    <div class="modal-backdrop" onclick="closeModal('productModal')"></div>
+    <div class="modal-content modal-lg">
+      <button class="modal-close-btn" onclick="closeModal('productModal')"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-header">
+        <h3 id="productModalTitle">Add New Product</h3>
+        <p>Upload image file directly from your computer or enter an image link</p>
+      </div>
+
+      <form id="productForm" onsubmit="handleProductFormSubmit(event)">
+        <input type="hidden" id="prodEditId">
+        
+        <div class="form-group">
+          <label>Product Title *</label>
+          <input type="text" id="prodName" placeholder="e.g. Traditional Kanchipuram Silk Saree" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Category *</label>
+            <select id="prodCategory" required>
+              <option value="Women">Women</option>
+              <option value="Accessories">Accessories</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Stock Quantity *</label>
+            <input type="number" id="prodStock" min="0" value="20" required>
+          </div>
+        </div>
+
+        <div class="form-row form-row-3col">
+          <div class="form-group">
+            <label>Selling Price (₹) *</label>
+            <input type="number" id="prodPrice" step="0.01" min="1" placeholder="2499.00" required>
+          </div>
+          <div class="form-group">
+            <label>Original MRP (₹) (Optional)</label>
+            <input type="number" id="prodOriginalPrice" step="0.01" min="1" placeholder="3499.00">
+          </div>
+          <div class="form-group">
+            <label><i class="fa-solid fa-truck-fast" style="color: #6366f1;"></i> Shipping Cost (₹) *</label>
+            <input type="number" id="prodShippingCost" min="0" step="1" value="0" placeholder="0 (Free Delivery)">
+            <small style="color:#64748b; font-size: 0.72rem;">0 = Free Delivery</small>
+          </div>
+        </div>
+
+        <!-- Product Image: Choose File from Computer OR Paste URL -->
+        <div class="form-group">
+          <label>Product Image *</label>
+          <div class="image-upload-container">
+            
+            <!-- File input from computer -->
+            <div class="file-drop-area">
+              <label for="prodImageFile" class="file-upload-btn">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span>Choose Image from Computer</span>
+              </label>
+              <input type="file" id="prodImageFile" accept="image/png, image/jpeg, image/jpg, image/webp" onchange="previewUploadedFile(this)" style="display:none;">
+              <span id="fileChosenLabel" class="file-chosen-text">No file chosen (PNG, JPG, WEBP)</span>
+            </div>
+
+            <div class="divider-text"><span>OR ENTER IMAGE LINK</span></div>
+
+            <input type="url" id="prodImage" placeholder="https://images.unsplash.com/..." oninput="previewModalImage(this.value)">
+          </div>
+
+          <!-- Live Image Preview Box -->
+          <div class="img-preview-box" id="prodImgPreviewBox" style="margin-top: 12px; display: none;">
+            <span style="font-size: 0.8rem; font-weight: 600; color: #64748b; display: block; margin-bottom: 4px;">Image Preview:</span>
+            <img id="prodImgPreview" src="" alt="Preview" style="max-height: 140px; border-radius: 8px; border: 1px solid #cbd5e1; object-fit: cover;">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Product Description</label>
+          <textarea id="prodDesc" rows="3" placeholder="Describe the fabrics, weaves, fit, style, and care instructions..."></textarea>
+        </div>
+
+        <div class="form-group checkbox-group">
+          <label class="custom-checkbox">
+            <input type="checkbox" id="prodFeatured">
+            <span>Mark as Featured Product on Home Page</span>
+          </label>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline-dark" onclick="closeModal('productModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btnSaveProduct">Save Product</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Dedicated Admin Login Modal -->
+  <div class="modal" id="adminLoginModal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content" style="max-width: 420px; text-align: center;">
+      <div style="font-size: 2.2rem; color: #4f46e5; margin-bottom: 10px;">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
+      <h2 style="font-family: var(--font-serif); margin-bottom: 6px;">THAMIZHINI Admin</h2>
+      <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 20px;">
+        Enter your administrative credentials to manage store
+      </p>
+
+      <form id="adminLoginForm" onsubmit="handleAdminDirectLogin(event)" style="text-align: left;">
+        <div class="form-group">
+          <label><i class="fa-regular fa-envelope"></i> Admin Email</label>
+          <input type="email" id="adminEmailInput" value="thamizhini@gmail.com" placeholder="thamizhini@gmail.com" required>
+        </div>
+        <div class="form-group">
+          <label><i class="fa-solid fa-lock"></i> Admin Password</label>
+          <input type="password" id="adminPassInput" value="thamizhini@gmail.com" placeholder="••••••••" required>
+        </div>
+        <button type="submit" id="btnAdminDirectLogin" class="btn btn-primary btn-block btn-lg" style="margin-top: 10px;">
+          <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In to Dashboard
+        </button>
+        <div style="text-align: center; margin-top: 14px;">
+          <a href="/" style="font-size: 0.82rem; color: #64748b; text-decoration: none;">
+            <i class="fa-solid fa-arrow-left"></i> Return to Storefront
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Admin Script -->
+  <script src="js/admin.js"></script>
+</body>
+</html>

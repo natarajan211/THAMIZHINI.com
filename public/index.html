@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THAMIZHINI | Women's Fashion & Luxury Accessories</title>
+  
+  <!-- Google Fonts: Plus Jakarta Sans & Playfair Display -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <div class="announcement-bar">
+    <div class="container announcement-content">
+      <span>✨ <strong>THAMIZHINI FESTIVE SPECIAL:</strong> Flat 20% OFF on Silk Sarees & Designer Wear | Code: <strong>THAMIZH20</strong></span>
+      <div class="announcement-links">
+        <a href="#shop" onclick="filterByCategory('Women')">Women's Collection</a>
+        <span class="sep">•</span>
+        <a href="#shop" onclick="filterByCategory('Accessories')">Luxury Accessories</a>
+        <span class="sep">•</span>
+        <a href="#store-location" style="color: #f7d8b5;"><i class="fa-solid fa-location-dot"></i> Our Store</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Navigation Header -->
+  <header class="main-header">
+    <div class="container nav-container">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="brand-logo" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+        <span class="logo-text">THAMIZHINI</span>
+        <span class="logo-sub">WOMEN'S COUTURE & ACCESSORIES</span>
+      </a>
+
+      <!-- Search Bar -->
+      <div class="nav-search">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="searchInput" placeholder="Search silk sarees, kurtis, dresses, jewellery, bags, watches..." oninput="handleSearch(this.value)">
+        <button id="clearSearchBtn" class="clear-search hidden" onclick="clearSearch()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <!-- Nav Actions (Cart, Account, Admin) -->
+      <div class="nav-actions">
+        <div id="authActions" class="auth-buttons">
+          <!-- Dynamically populated via app.js -->
+          <button class="btn btn-outline-dark btn-sm" onclick="openAuthModal('login')">
+            <i class="fa-regular fa-user"></i> <span>Login</span>
+          </button>
+        </div>
+
+        <!-- Cart Button with Counter -->
+        <button class="cart-btn" onclick="toggleCartDrawer()" aria-label="Shopping Cart">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="cart-badge" id="cartCountBadge">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Banner Section -->
+  <section class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="container hero-content">
+      <span class="hero-tag"><i class="fa-solid fa-sparkles"></i> 2026 Festive & Modern Collection</span>
+      <h1 class="hero-title">Timeless Grace & <br><em>Pure Elegance</em></h1>
+      <p class="hero-desc">Discover handwoven silk sarees, designer kurtis, chic contemporary western wear, and handcrafted luxury accessories designed for the modern woman.</p>
+      
+      <div class="hero-cta-group">
+        <a href="#shop" class="btn btn-primary btn-lg" onclick="filterByCategory('All')">
+          Explore Collection <i class="fa-solid fa-arrow-right"></i>
+        </a>
+        <a href="#categories" class="btn btn-glass btn-lg">Browse Categories</a>
+      </div>
+
+      <div class="hero-perks">
+        <div class="perk-item">
+          <i class="fa-solid fa-truck-fast"></i>
+          <div><strong>Free Shipping</strong><span>On orders over ₹1,999</span></div>
+        </div>
+        <div class="perk-item">
+          <i class="fa-solid fa-gem"></i>
+          <div><strong>100% Authentic</strong><span>Pure Silk & Handcrafted</span></div>
+        </div>
+        <div class="perk-item">
+          <i class="fa-solid fa-rotate-left"></i>
+          <div><strong>Easy Returns</strong><span>7-Day Return Policy</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories Spotlight Section -->
+  <section class="categories-section" id="categories">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="sub-heading">EXCLUSIVE SELECTIONS</span>
+        <h2 class="main-heading">Shop by Category</h2>
+        <p class="section-subtitle">Handpicked ethnic and contemporary fashion curated for your special moments</p>
+      </div>
+
+      <div class="category-grid">
+        <!-- Women's Category Card -->
+        <div class="category-card" onclick="filterByCategory('Women')">
+          <div class="category-img-box">
+            <img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=1000&auto=format&fit=crop&q=80" alt="Women's Collection">
+          </div>
+          <div class="category-info">
+            <span class="cat-pill">Signature</span>
+            <h3>Women's Couture</h3>
+            <p>Kanchipuram Silk Sarees, Chikankari Kurtis, Maxi Dresses & Satin Blouses</p>
+            <span class="cat-link">Explore Women's Wear <i class="fa-solid fa-arrow-right"></i></span>
+          </div>
+        </div>
+
+        <!-- Accessories Category Card -->
+        <div class="category-card" onclick="filterByCategory('Accessories')">
+          <div class="category-img-box">
+            <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=1000&auto=format&fit=crop&q=80" alt="Accessories Collection">
+          </div>
+          <div class="category-info">
+            <span class="cat-pill">Handcrafted</span>
+            <h3>Luxury Accessories</h3>
+            <p>Kundan Choker Sets, Embroidered Potli Bags, Leather Crossbody & Watches</p>
+            <span class="cat-link">Explore Accessories <i class="fa-solid fa-arrow-right"></i></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Products Catalog Section -->
+  <section class="products-section" id="shop">
+    <div class="container">
+      
+      <!-- Catalog Controls: Filter & Sort Bar -->
+      <div class="catalog-controls">
+        <div class="controls-left">
+          <h2 class="catalog-title">Thamizhini Collection</h2>
+          <span class="catalog-count" id="productCountLabel">Showing products</span>
+        </div>
+
+        <div class="controls-right">
+          <!-- Category Pills (Men's removed) -->
+          <div class="category-filters">
+            <button class="filter-pill active" data-category="All" onclick="filterByCategory('All')">All</button>
+            <button class="filter-pill" data-category="Women" onclick="filterByCategory('Women')">Women's Wear</button>
+            <button class="filter-pill" data-category="Accessories" onclick="filterByCategory('Accessories')">Accessories</button>
+          </div>
+
+          <!-- Sort Select -->
+          <div class="sort-wrapper">
+            <i class="fa-solid fa-arrow-down-short-wide"></i>
+            <select id="sortSelect" onchange="handleSortChange(this.value)">
+              <option value="newest">Newest Arrivals</option>
+              <option value="price_asc">Price: Low to High</option>
+              <option value="price_desc">Price: High to Low</option>
+              <option value="rating">Top Rated</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Filter / Search Notification -->
+      <div id="filterStatus" class="filter-status-bar hidden">
+        <span id="filterStatusText">Showing results</span>
+        <button class="btn-clear-filter" onclick="resetFilters()">Clear Filters <i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="products-grid" id="productsGrid">
+        <!-- Rendered dynamically via app.js -->
+        <div class="loader-container">
+          <div class="spinner"></div>
+          <p>Loading curated fashion styles...</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Boutique Store Location Section -->
+  <section class="store-section" id="store-location">
+    <div class="container">
+      <div class="store-grid">
+        <div class="store-info-panel">
+          <span class="sub-heading">VISIT OUR BOUTIQUE / கடை முகவரி</span>
+          <h2 class="store-heading" id="storeDisplayTitle">THAMIZHINI Silks & Couture</h2>
+          <p class="store-tagline-text" id="storeDisplayTagline">Experience our handcrafted pure silk sarees, designer couture and royal accessories in person.</p>
+
+          <div class="store-details-list">
+            <div class="store-detail-item">
+              <div class="detail-icon"><i class="fa-solid fa-location-dot"></i></div>
+              <div>
+                <strong>Store Address (கடை முகவரி)</strong>
+                <p id="storeDisplayAddress">No. 48, Usman Road, T. Nagar, Chennai - 600017, Tamil Nadu, India.<br><span style="color: #64748b; font-size: 0.85rem;">Landmark: Opposite to Panagal Park</span></p>
+              </div>
+            </div>
+
+            <div class="store-detail-item">
+              <div class="detail-icon"><i class="fa-solid fa-clock"></i></div>
+              <div>
+                <strong>Opening Hours (பணி நேரம்)</strong>
+                <p id="storeDisplayHours">Monday – Sunday: 9:30 AM – 9:30 PM (Open All 7 Days)</p>
+              </div>
+            </div>
+
+            <div class="store-detail-item">
+              <div class="detail-icon"><i class="fa-solid fa-phone-volume"></i></div>
+              <div>
+                <strong>Contact & Inquiries (தொடர்புக்கு)</strong>
+                <p><a href="tel:+919840012345" id="storeDisplayPhone" style="font-weight: 700; color: var(--color-primary);">+91 98400 12345</a> • <span id="storeDisplayEmail">contact@thamizhini.com</span></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="store-action-btns">
+            <a href="https://maps.google.com/?q=Usman+Road+T+Nagar+Chennai" target="_blank" id="storeDisplayMapsBtn" class="btn btn-primary">
+              <i class="fa-solid fa-diamond-turn-right"></i> Get Directions on Google Maps
+            </a>
+            <a href="https://wa.me/919840012345?text=Hello%20Thamizhini%20Boutique" target="_blank" id="storeDisplayWhatsappBtn" class="btn btn-outline-dark">
+              <i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp
+            </a>
+          </div>
+        </div>
+
+        <div class="store-visual-panel">
+          <div class="store-visual-img">
+            <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=800&auto=format&fit=crop&q=80" alt="Thamizhini Boutique Store">
+            <div class="store-badge-overlay">
+              <i class="fa-solid fa-shop"></i>
+              <div>
+                <strong>Chennai Flagship Store</strong>
+                <span>Personal Bridal Draping & Custom Styling</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cart Drawer (Side Drawer) -->
+  <div class="cart-drawer-overlay" id="cartOverlay" onclick="toggleCartDrawer()"></div>
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="drawer-header">
+      <div class="drawer-title">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <h3>Your Shopping Bag (<span id="drawerCount">0</span>)</h3>
+      </div>
+      <button class="drawer-close-btn" onclick="toggleCartDrawer()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <!-- Free Shipping Progress (Hidden) -->
+    <div class="shipping-progress-box" style="display: none;">
+      <div class="shipping-progress-text" id="shippingProgressText">Free Delivery</div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="shippingProgressBar" style="width: 100%"></div>
+      </div>
+    </div>
+
+    <!-- Cart Items List Container -->
+    <div class="drawer-items" id="drawerCartItems">
+      <!-- Items dynamically populated -->
+    </div>
+
+    <!-- Drawer Footer & Checkout -->
+    <div class="drawer-footer" id="drawerFooter">
+      <div class="summary-line">
+        <span>Items Subtotal</span>
+        <strong id="drawerSubtotal">₹0</strong>
+      </div>
+      <div class="summary-line">
+        <span>Delivery (டெலிவரி)</span>
+        <span id="drawerShipping" style="color: #16a34a; font-weight: 600;">FREE</span>
+      </div>
+      <div class="summary-line total-line">
+        <span>Total</span>
+        <strong id="drawerTotal">₹0</strong>
+      </div>
+      <button class="btn btn-primary btn-block checkout-trigger-btn" onclick="openCheckoutModal()">
+        Proceed to Checkout <i class="fa-solid fa-arrow-right"></i>
+      </button>
+      <button class="btn btn-outline-dark btn-block btn-sm" onclick="clearCart()">
+        Clear Bag
+      </button>
+    </div>
+  </aside>
+
+  <!-- Quick View Product Modal -->
+  <div class="modal" id="quickViewModal">
+    <div class="modal-backdrop" onclick="closeModal('quickViewModal')"></div>
+    <div class="modal-content modal-quickview">
+      <button class="modal-close-btn" onclick="closeModal('quickViewModal')"><i class="fa-solid fa-xmark"></i></button>
+      <div class="quickview-body" id="quickViewContent">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Authentication Modal (Login & Register) -->
+  <div class="modal" id="authModal">
+    <div class="modal-backdrop" onclick="closeModal('authModal')"></div>
+    <div class="modal-content modal-auth">
+      <button class="modal-close-btn" onclick="closeModal('authModal')"><i class="fa-solid fa-xmark"></i></button>
+      
+      <!-- Tab Selector -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Sign In</button>
+        <button class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')">Create Account</button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="loginForm" class="auth-form" onsubmit="handleLoginSubmit(event)">
+        <div class="form-group">
+          <label><i class="fa-regular fa-envelope"></i> Email Address</label>
+          <input type="email" id="loginEmail" placeholder="e.g. yourname@example.com" required>
+        </div>
+        <div class="form-group">
+          <label><i class="fa-solid fa-lock"></i> Password</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Sign In <i class="fa-solid fa-arrow-right"></i></button>
+      </form>
+
+      <!-- Register Form -->
+      <form id="registerForm" class="auth-form hidden" onsubmit="handleRegisterSubmit(event)">
+        <div class="form-group">
+          <label><i class="fa-regular fa-user"></i> Full Name</label>
+          <input type="text" id="regName" placeholder="e.g. Thamizhini Priya" required>
+        </div>
+        <div class="form-group">
+          <label><i class="fa-regular fa-envelope"></i> Email Address</label>
+          <input type="email" id="regEmail" placeholder="e.g. priya@example.com" required>
+        </div>
+        <div class="form-group">
+          <label><i class="fa-solid fa-lock"></i> Password (min 6 characters)</label>
+          <input type="password" id="regPassword" minlength="6" placeholder="Create strong password" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Create Account <i class="fa-solid fa-arrow-right"></i></button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div class="modal" id="checkoutModal">
+    <div class="modal-backdrop" onclick="closeModal('checkoutModal')"></div>
+    <div class="modal-content modal-checkout">
+      <button class="modal-close-btn" onclick="closeModal('checkoutModal')"><i class="fa-solid fa-xmark"></i></button>
+      <div class="checkout-header">
+        <h2><i class="fa-solid fa-lock"></i> Secure Checkout</h2>
+        <p>Complete your delivery and contact details below</p>
+      </div>
+
+      <div class="checkout-container">
+        <!-- Form Left -->
+        <form id="checkoutForm" class="checkout-form" onsubmit="handleOrderSubmit(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Full Name *</label>
+              <input type="text" id="shipName" placeholder="Recipient's Name" required>
+            </div>
+            <div class="form-group">
+              <label>Phone Number *</label>
+              <input type="tel" id="shipPhone" placeholder="10-digit mobile number" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Street Address / Flat / Landmark *</label>
+            <input type="text" id="shipAddress" placeholder="e.g. 42 Anna Salai, T. Nagar" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>City *</label>
+              <input type="text" id="shipCity" placeholder="e.g. Chennai" required>
+            </div>
+            <div class="form-group">
+              <label>Postal / PIN Code *</label>
+              <input type="text" id="shipPostal" placeholder="600017" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Payment Method (பணம் செலுத்தும் முறை) *</label>
+            <div class="payment-options">
+              <label class="payment-radio">
+                <input type="radio" name="paymentMethod" value="Cash On Delivery" checked onchange="togglePaymentMethod('cod')">
+                <div class="radio-card">
+                  <i class="fa-solid fa-money-bill-wave"></i>
+                  <div>
+                    <strong>Cash on Delivery (COD)</strong>
+                    <small>Pay with cash when package arrives at your doorstep</small>
+                  </div>
+                </div>
+              </label>
+
+              <label class="payment-radio">
+                <input type="radio" name="paymentMethod" value="UPI" onchange="togglePaymentMethod('upi')">
+                <div class="radio-card">
+                  <i class="fa-solid fa-qrcode" style="color: #6366f1;"></i>
+                  <div>
+                    <strong>Instant UPI Payment (GPay, PhonePe, Paytm, BHIM)</strong>
+                    <small>Scan dynamic QR code or pay directly via UPI App</small>
+                  </div>
+                </div>
+              </label>
+            </div>
+
+            <!-- Dynamic UPI Payment Card (Expands when UPI is selected) -->
+            <div id="upiPaymentBox" class="upi-box hidden">
+              <div class="upi-header">
+                <div class="upi-badge"><i class="fa-solid fa-shield-halved"></i> Direct Store UPI Payment</div>
+                <div class="upi-amount-pill">Pay: <strong id="upiPayAmount">₹0</strong></div>
+              </div>
+
+              <div class="upi-body">
+                <!-- QR Code Display -->
+                <div class="upi-qr-card">
+                  <img id="upiQrImage" src="" alt="UPI QR Code" class="upi-qr-img">
+                  <span class="qr-scan-hint"><i class="fa-solid fa-camera"></i> Scan with GPay / PhonePe / Paytm</span>
+                </div>
+
+                <!-- UPI Details & Actions -->
+                <div class="upi-info-card">
+                  <div class="upi-vpa-row">
+                    <span class="upi-vpa-label">Store UPI ID:</span>
+                    <div class="upi-vpa-box">
+                      <strong id="displayUpiId">natarajanamsavalli348-2@okaxis</strong>
+                      <button type="button" class="btn-copy-upi" onclick="copyUpiId()" title="Copy UPI ID">
+                        <i class="fa-regular fa-copy"></i> Copy
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Direct App Deep Link for Mobile -->
+                  <div class="upi-mobile-link">
+                    <a href="#" id="upiDeepLink" class="btn btn-outline-dark btn-sm btn-block">
+                      <i class="fa-solid fa-mobile-screen"></i> Open in GPay / PhonePe / Paytm
+                    </a>
+                  </div>
+
+                  <!-- UTR / Ref Number Input -->
+                  <div class="form-group utr-group" style="margin-top: 14px; margin-bottom: 0;">
+                    <label style="font-size: 0.82rem; font-weight: 700; color: #0f172a;">
+                      <i class="fa-solid fa-receipt"></i> 12-digit UPI Reference / UTR Number *
+                    </label>
+                    <input type="text" id="upiUtrNumber" maxlength="20" placeholder="e.g. 423456789012 (From UPI App screen)">
+                    <small style="color: #64748b; font-size: 0.75rem; display: block; margin-top: 4px;">
+                      Enter the 12-digit UPI Ref/UTR No. shown on your GPay/PhonePe payment receipt.
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <button type="submit" id="btnPlaceOrder" class="btn btn-primary btn-block btn-lg">
+            Confirm & Place Order (<span id="checkoutPayAmount">₹0</span>)
+          </button>
+        </form>
+
+        <!-- Order Summary Right -->
+        <div class="checkout-summary">
+          <h3>Order Summary</h3>
+          <div class="checkout-summary-items" id="checkoutItemsList">
+            <!-- Items injected -->
+          </div>
+          <div class="checkout-totals">
+            <div class="c-line"><span>Items Subtotal</span><span id="checkoutSubtotal">₹0</span></div>
+            <div class="c-line"><span>Delivery (டெலிவரி)</span><span id="checkoutShipping" style="color: #16a34a; font-weight: 600;">FREE</span></div>
+            <div class="c-line c-grand-total"><span>Total Payable</span><span id="checkoutGrandTotal">₹0</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Order History Modal -->
+  <div class="modal" id="ordersModal">
+    <div class="modal-backdrop" onclick="closeModal('ordersModal')"></div>
+    <div class="modal-content modal-orders">
+      <button class="modal-close-btn" onclick="closeModal('ordersModal')"><i class="fa-solid fa-xmark"></i></button>
+      <div class="orders-header">
+        <h2><i class="fa-solid fa-receipt"></i> Your Order History (ஆர்டர் வரலாறு)</h2>
+        <p>Track your active, completed and previous orders from Thamizhini</p>
+
+        <!-- Customer Status Tabs: All, Pending, Shipped, Completed, Cancelled -->
+        <div class="user-order-filter-pills">
+          <button class="u-order-pill active" id="userPillAll" data-status="All" onclick="filterUserOrders('All')">
+            All Orders (<span id="userCountAll">0</span>)
+          </button>
+          <button class="u-order-pill pill-pending" id="userPillPending" data-status="Pending" onclick="filterUserOrders('Pending')">
+            <i class="fa-solid fa-clock"></i> Pending (<span id="userCountPending">0</span>)
+          </button>
+          <button class="u-order-pill pill-shipped" id="userPillShipped" data-status="Shipped" onclick="filterUserOrders('Shipped')">
+            <i class="fa-solid fa-truck-fast"></i> Shipped (<span id="userCountShipped">0</span>)
+          </button>
+          <button class="u-order-pill pill-delivered" id="userPillDelivered" data-status="Delivered" onclick="filterUserOrders('Delivered')">
+            <i class="fa-solid fa-circle-check"></i> Completed (<span id="userCountDelivered">0</span>)
+          </button>
+          <button class="u-order-pill pill-cancelled" id="userPillCancelled" data-status="Cancelled" onclick="filterUserOrders('Cancelled')">
+            <i class="fa-solid fa-ban"></i> Cancelled (<span id="userCountCancelled">0</span>)
+          </button>
+        </div>
+      </div>
+
+      <div class="orders-list" id="userOrdersList">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Modern Footer -->
+  <footer class="main-footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <span class="logo-text">THAMIZHINI</span>
+        <p>Crafting timeless women's couture, authentic handwoven silk sarees, designer festive apparel, and handcrafted luxury jewellery with unmatched elegance.</p>
+        <div class="social-links">
+          <a href="#"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#"><i class="fa-brands fa-pinterest"></i></a>
+          <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Collections</h4>
+        <ul>
+          <li><a href="#shop" onclick="filterByCategory('Women')">Pure Silk Sarees & Kurtis</a></li>
+          <li><a href="#shop" onclick="filterByCategory('Women')">Maxi Dresses & Blouses</a></li>
+          <li><a href="#shop" onclick="filterByCategory('Accessories')">Kundan Jewellery & Chokers</a></li>
+          <li><a href="#shop" onclick="filterByCategory('Accessories')">Embroidered Bags & Watches</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Boutique Store / முகவரி</h4>
+        <p style="font-size: 0.85rem; line-height: 1.5; color: #cbd5e1; margin-bottom: 8px;" id="footerStoreAddress">
+          No. 48, Usman Road, T. Nagar, Chennai - 600017, Tamil Nadu.
+        </p>
+        <p style="font-size: 0.82rem; color: #94a3b8; margin-bottom: 6px;">
+          <i class="fa-solid fa-phone"></i> <span id="footerStorePhone">+91 98400 12345</span>
+        </p>
+        <p style="font-size: 0.82rem; color: #94a3b8; margin-bottom: 8px;">
+          <i class="fa-solid fa-clock"></i> <span id="footerStoreHours">9:30 AM – 9:30 PM (All 7 Days)</span>
+        </p>
+        <a href="#store-location" style="color: var(--color-accent); font-size: 0.84rem; font-weight: 700;">View Map & Full Address →</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Admin & Operations</h4>
+        <ul>
+          <li><a href="/admin.html" class="admin-portal-link"><i class="fa-solid fa-shield-halved"></i> Admin Portal</a></li>
+          <li><a href="javascript:void(0)" onclick="openAuthModal('login')">Account Login</a></li>
+          <li><a href="javascript:void(0)" onclick="viewMyOrders()">View Order History</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container footer-bottom-inner">
+        <p>© 2026 THAMIZHINI. All Rights Reserved. Built with Node.js, Express & MySQL.</p>
+        <div class="payment-badges">
+          <span><i class="fa-brands fa-cc-visa"></i> Visa</span>
+          <span><i class="fa-brands fa-cc-mastercard"></i> Mastercard</span>
+          <span><i class="fa-solid fa-building-columns"></i> UPI / NetBanking</span>
+          <span><i class="fa-solid fa-money-bill-transfer"></i> COD</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Script -->
+  <script src="js/app.js"></script>
+</body>
+</html>
